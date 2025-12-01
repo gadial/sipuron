@@ -585,8 +585,8 @@ def generate_index_page(available_years):
 
 def main():
     """Generate all HTML pages."""
-    # Create output directory
-    os.makedirs('output', exist_ok=True)
+    # Create output directory (docs for GitHub Pages)
+    os.makedirs('docs', exist_ok=True)
     
     # Find all year files
     data_dir = Path('data')
@@ -608,7 +608,7 @@ def main():
             is_current = year_num == current_year
             html = generate_list_page(year, data, is_current)
             
-            output_file = f'output/list_{year}.html'
+            output_file = f'docs/list_{year}.html'
             with open(output_file, 'w', encoding='utf8') as f:
                 f.write(html)
             
@@ -616,12 +616,12 @@ def main():
     
     # Generate index page
     index_html = generate_index_page(available_years)
-    with open('output/index.html', 'w', encoding='utf8') as f:
+    with open('docs/index.html', 'w', encoding='utf8') as f:
         f.write(index_html)
     
-    print(f"\nGenerated output/index.html")
+    print(f"\nGenerated docs/index.html")
     print(f"\nTotal: {len(available_years)} list pages + 1 index page")
-    print(f"All files ready in output/ directory!")
+    print(f"All files ready in docs/ directory!")
 
 if __name__ == '__main__':
     main()
