@@ -1,4 +1,24 @@
-# GitHub Pages Subfolder Hosting Setup
+# GitHub Pages and yearly update workflow
+
+## Current repository setup
+
+This repository already keeps the generated GitHub Pages site in `docs/`. Configure
+GitHub Pages once with **Deploy from a branch**, branch `main`, folder `/docs`.
+
+For each full Google Forms CSV export:
+
+```bash
+python3 scripts/sipuron_to_yaml.py stories_2026.csv
+python3 scripts/generate_site.py
+git add data/year_2026.yml docs/
+git commit -m "Update 2026 stories"
+git push
+```
+
+The import replaces the year's YAML file from the complete CSV export, so repeat
+submissions are not appended or duplicated.
+
+The older alternatives below are retained as historical deployment notes.
 
 This document explains how to host the Sipuron project at `https://gadial.net/sipuron` as a subfolder of your main site.
 

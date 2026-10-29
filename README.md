@@ -15,12 +15,13 @@ sipuron/
 │   ├── year_2022.yml
 │   ├── year_2023.yml
 │   ├── year_2024.yml
-│   └── year_2025.yml
+│   ├── year_2025.yml
+│   └── year_2026.yml
 ├── scripts/                 # Python tools
 │   ├── sipuron_to_yaml.py  # CSV → YAML converter
 │   ├── generate_site.py    # YAML → HTML generator
 │   └── split_yaml.py       # One-time migration script
-├── output/                  # Generated static site (deploy this)
+├── docs/                    # Generated static site (served by GitHub Pages)
 │   ├── index.html
 │   ├── list_2021.html
 │   ├── list_2022.html
@@ -34,15 +35,17 @@ sipuron/
 ### Adding New Stories
 
 1. **Download CSV** from Google Forms
-2. **Convert to YAML**:
+2. **Convert to YAML** (this replaces that year's complete data file):
    ```bash
-   python scripts/sipuron_to_yaml.py stories_2025.csv
+   python3 scripts/sipuron_to_yaml.py stories_2026.csv
+   # If the filename has no year:
+   python3 scripts/sipuron_to_yaml.py responses.csv --year 2026
    ```
 3. **Generate site**:
    ```bash
-   python scripts/generate_site.py
+   python3 scripts/generate_site.py
    ```
-4. **Deploy** the `output/` directory (see [DEPLOYMENT.md](DEPLOYMENT.md))
+4. Commit and push `data/` and `docs/`; GitHub Pages serves `docs/`.
 
 ## Features
 
@@ -95,7 +98,7 @@ Converts CSV from Google Forms to YAML format.
 python scripts/sipuron_to_yaml.py <csv_filename>
 ```
 
-**Output**: `data/year_YYYY.yml` (auto-detected from filename or current year)
+**Output**: `data/year_YYYY.yml` (year read from the filename or `--year`)
 
 ### `generate_site.py`
 Generates complete static HTML site from YAML data files.
@@ -105,7 +108,7 @@ Generates complete static HTML site from YAML data files.
 python scripts/generate_site.py
 ```
 
-**Output**: All HTML files in `output/` directory
+**Output**: All HTML files in `docs/` directory
 
 **Features**:
 - Single template for all year pages
@@ -115,7 +118,7 @@ python scripts/generate_site.py
 
 ## Deployment
 
-The `output/` directory contains the complete static site. Deploy it to:
+The `docs/` directory contains the complete static site. Deploy it to:
 - **Target URL**: `https://gadial.net/sipuron`
 - **Method**: See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions
 
@@ -150,7 +153,7 @@ Edit `scripts/generate_site.py`:
 The generated HTML files can be opened directly in a browser:
 ```bash
 python scripts/generate_site.py
-cd output
+cd docs
 start index.html  # Windows
 # or
 open index.html   # macOS

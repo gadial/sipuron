@@ -10,28 +10,28 @@ Sipuron (סיפורונובמבר) is a Hebrew-language creative writing website
 1. **Data Collection**: Stories submitted via Google Forms → exported as CSV
 2. **Data Processing**: `scripts/sipuron_to_yaml.py` converts CSV → year-specific YAML files
 3. **Data Storage**: Separate YAML file per year: `data/year_2025.yml`, `data/year_2024.yml`, etc.
-4. **Generation**: Python script generates static HTML to `output/` directory
+4. **Generation**: Python script generates static HTML to `docs/` directory
 5. **Hosting**: Deployed to `https://gadial.net/sipuron` via GitHub Pages subfolder mounting
 
 ### CSV to YAML Conversion
 - **Script**: `scripts/sipuron_to_yaml.py`
 - **Usage**: `python scripts/sipuron_to_yaml.py <csv_filename>`
 - **Input CSV**: `time, author, keyword, story` (keyword extracted from column 2 after first space)
-- **Output**: `data/year_YYYY.yml` (auto-detected from filename or current date)
+- **Output**: `data/year_YYYY.yml` (auto-detected from filename or passed with `--year`)
 - **Structure**:
   ```yaml
   stories: [{time, author, keyword, story, length}, ...]
   keywords: [unique keywords list]
   authors: [unique authors list]
   ```
-- **Note**: Script should extract year from CSV filename or use current year
+- **Note**: If the filename has no year, require `--year`; never silently use the current year
 
 ### Static HTML Generation
 - **Input**: Year-specific YAML files from `data/` directory
-- **Output**: Static HTML files to `output/` directory:
-  - `output/index.html` - landing page with Google Form iframe
-  - `output/list_2025.html` - current year stories
-  - `output/list_2024.html` - archived year stories
+- **Output**: Static HTML files to `docs/` directory:
+  - `docs/index.html` - landing page with Google Form iframe
+  - `docs/list_2026.html` - current year stories
+  - `docs/list_2025.html` - archived year stories
 - **Template approach**: Use Python (Jinja2 or string templating) to generate HTML
 - **Embedded assets**: Inline CSS and JavaScript (list.js + jQuery filtering logic) in each HTML file
 
@@ -63,7 +63,7 @@ All list pages include:
 data/year_YYYY.yml          # Year-specific story data
 scripts/sipuron_to_yaml.py  # CSV → YAML converter
 scripts/generate_site.py    # YAML → HTML generator (to be created)
-output/                     # Generated static HTML files
+docs/                       # Generated static HTML files served by GitHub Pages
 old_site_data/              # Legacy Jekyll data (ignore)
 pages/                      # Legacy Jekyll templates (reference only)
 ```
@@ -74,7 +74,7 @@ pages/                      # Legacy Jekyll templates (reference only)
 1. Download CSV from Google Forms
 2. Run: `python scripts/sipuron_to_yaml.py <filename>.csv`
 3. Run: `python scripts/generate_site.py` (generates all HTML files)
-4. Deploy: Copy `output/` contents to GitHub Pages repository
+4. Deploy: Commit and push `data/` and the regenerated `docs/` files
 
 ### Regenerating Site
 ```bash
